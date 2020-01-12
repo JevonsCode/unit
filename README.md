@@ -52,4 +52,85 @@ test('测试减法 7 - 3', () => {
 })
 ```
 
+## Jest
 
+帮助我们完成**单元测试（模块）**、**集成测试（多个模块）**
+
+### Jest 的配置
+
+不用默认配置自行配置：
+
+`npx jest --init`
+
+为了让 Jest 支持 es6 语法，需要安装 
+
+`@babel/core`, `@babel/preset-env`
+
+配置 `.babelrc`
+
+```
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "current"
+                }
+            }
+        ]
+    ]
+}
+```
+
+### Jest 的运行机制
+
+当运行 `npm run jest` 时，  
+jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了 babel-core，  
+如果安装了则会去取 .babelrc 文件中的配置,  
+取到后会在运行之前，结合 babel 把代码做一次转化，  
+运行转化后的测试用例代码。  
+
+### Jest 的匹配器
+
+- toBe 匹配器
+    相当于全等（===）
+    ```
+    ...
+        const a = { b: 1 }
+        expect(a).toBe({ b: 1 }) // failed （引用地址不同）
+    ...
+    ```
+
+- toEqual 匹配器
+    ```
+    ...
+        const a = { b: 1 }
+        expect(a).toEqual({ b: 1 }) // passed
+    ...
+    ```
+
+- toBeNull、toBeUndefined、toBeDefined、toBeTruthy、toBeFalsy 匹配器
+    匹配 null undefined defined true(1) false(0)
+
+- not 匹配器
+    ```
+    ...
+        expect(1).not.toEqual(2) // passed
+    ...
+    ```
+
+- toBeGreaterThan、toBeLessThan、toBeGreaterThanOrEqual、toBeLessThanOrEqual 匹配器
+    ```
+    const count = 5;
+    expect(count).toBeGreaterThan(6); // failed （5 是否大于 6）
+    expect(count).toBeLessThanOrEqual(6); // passed （5 是否小于等于 6）
+    ```
+
+- toBeCloseTo 匹配器
+    ```
+    const a = 0.1;
+    const b = 0.1;
+    expect(a + b).toBeEqual(0.3); // failed
+    expect(a + b).toBeCloseTo(0.3); // passed
+    ```
