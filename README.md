@@ -103,7 +103,7 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
 
 ### Jest 的[匹配器](https://jestjs.io/docs/en/expect#methods)
 
-- toBe 匹配器
+- toBe 匹配器  
     相当于全等（===）
     ```
     ...
@@ -112,7 +112,7 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
     ...
     ```
 
-- toEqual 匹配器
+- toEqual 匹配器  
     ```
     ...
         const a = { b: 1 }
@@ -120,27 +120,54 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
     ...
     ```
 
-- toBeNull、toBeUndefined、toBeDefined、toBeTruthy、toBeFalsy 匹配器
+- toBeNull、toBeUndefined、toBeDefined、toBeTruthy、toBeFalsy 匹配器  
     匹配 null undefined defined true(1) false(0)
 
-- not 匹配器
+- not 匹配器  
     ```
     ...
         expect(1).not.toEqual(2) // passed
     ...
     ```
 
-- toBeGreaterThan、toBeLessThan、toBeGreaterThanOrEqual、toBeLessThanOrEqual 匹配器
+- toBeGreaterThan、toBeLessThan、toBeGreaterThanOrEqual、toBeLessThanOrEqual 匹配器  
     ```
     const count = 5;
     expect(count).toBeGreaterThan(6); // failed （5 是否大于 6）
     expect(count).toBeLessThanOrEqual(6); // passed （5 是否小于等于 6）
     ```
 
-- toBeCloseTo 匹配器
+- toBeCloseTo 匹配器  
     ```
     const a = 0.1;
     const b = 0.1;
     expect(a + b).toBeEqual(0.3); // failed
     expect(a + b).toBeCloseTo(0.3); // passed
     ```
+
+- toMatch 匹配器  
+    ```
+    const str = "qwertyuiop";
+    expect(str).toMatch(/qwer/); // passed
+    ```
+
+- toContain 匹配器  
+    ```
+    const arr = ["q", "w", "e"];
+    const data = new Set(arr);
+    expect(data).toContain("w"); // passed
+    ```
+
+- toThrow 匹配器  
+    ```
+    const errorThrow = () => { throw new Error("error"); }
+    ...
+    expect(errorThrow).toThrow(); // passed
+    expect(errorThrow).toThrow("error"); // passed
+    ```
+
+
+
+
+
+
