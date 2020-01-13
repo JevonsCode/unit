@@ -82,6 +82,16 @@ test('测试减法 7 - 3', () => {
     ]
 }
 ```
+[使用 TypeScript](https://jestjs.io/docs/en/getting-started.html#using-typescript)， 安装 `@babel/preset-typescript`，配置：
+
+```
+module.exports = {
+  presets: [
+    ['@babel/preset-env', {targets: {node: 'current'}}],
++    '@babel/preset-typescript',
+  ],
+};
+```
 
 ### Jest 的运行机制
 
