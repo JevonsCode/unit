@@ -101,7 +101,7 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
 取到后会在运行之前，结合 babel 把代码做一次转化，  
 运行转化后的测试用例代码。  
 
-### Jest 的匹配器
+### Jest 的[匹配器](https://jestjs.io/docs/en/expect#methods)
 
 - toBe 匹配器
     相当于全等（===）
