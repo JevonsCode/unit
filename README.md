@@ -68,7 +68,7 @@ test('测试减法 7 - 3', () => {
 
 配置 `.babelrc`
 
-```
+```json
 {
     "presets": [
         [
@@ -105,7 +105,7 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
 
 - toBe 匹配器  
     相当于全等（===）
-    ```
+    ```js
     ...
         const a = { b: 1 }
         expect(a).toBe({ b: 1 }) // failed （引用地址不同）
@@ -113,7 +113,7 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
     ```
 
 - toEqual 匹配器  
-    ```
+    ```js
     ...
         const a = { b: 1 }
         expect(a).toEqual({ b: 1 }) // passed
@@ -124,21 +124,21 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
     匹配 null undefined defined true(1) false(0)
 
 - not 匹配器  
-    ```
+    ```js
     ...
         expect(1).not.toEqual(2) // passed
     ...
     ```
 
 - toBeGreaterThan、toBeLessThan、toBeGreaterThanOrEqual、toBeLessThanOrEqual 匹配器  
-    ```
+    ```js
     const count = 5;
     expect(count).toBeGreaterThan(6); // failed （5 是否大于 6）
     expect(count).toBeLessThanOrEqual(6); // passed （5 是否小于等于 6）
     ```
 
 - toBeCloseTo 匹配器  
-    ```
+    ```js
     const a = 0.1;
     const b = 0.1;
     expect(a + b).toBeEqual(0.3); // failed
@@ -146,25 +146,128 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
     ```
 
 - toMatch 匹配器  
-    ```
+    ```js
     const str = "qwertyuiop";
     expect(str).toMatch(/qwer/); // passed
     ```
 
 - toContain 匹配器  
-    ```
+    ```js
     const arr = ["q", "w", "e"];
     const data = new Set(arr);
     expect(data).toContain("w"); // passed
     ```
 
 - toThrow 匹配器  
-    ```
+    ```js
     const errorThrow = () => { throw new Error("error"); }
     ...
     expect(errorThrow).toThrow(); // passed
     expect(errorThrow).toThrow("error"); // passed
     ```
+
+### --watchAll 的命令描述
+
+```
+Watch Usage
+ › Press f to run only failed tests.
+ › Press o to only run tests related to changed files. // 要使用 git
+ › Press p to filter by a filename regex pattern. // 匹配 filename
+ › Press t to filter by a test name regex pattern. // 匹配 test name
+ › Press q to quit watch mode.
+ › Press Enter to trigger a test run.
+```
+
+***使用 `--watch` 直接进入 `o` 模式***
+
+### 异步代码的测试方法
+
+```js
+import { 一个异步方法 } from "./有异步方法的文件";
+
+// 回调类型异步函数的测试
+test("异步方法的测试", (done) => {
+    一个异步方法((data) => {
+        expect(data).toEqual({
+            success: true
+        });
+        done(); // 要有这个回调函数，执行才算异步的结束
+    })
+})
+
+// promise then 写法
+test("异步方法的测试1", () => {
+    return 一个异步方法().then((response) => {
+        expect(response.data).toEqual({
+            success: true
+        })
+    })
+})
+
+// promise catch 写法 (测试接口返回 404)
+test("异步方法的测试2", () => {
+    expect.assertions(1); // 下面的 expect 至少要执行一个且为真
+    return 一个异步方法().catch((e) => {
+        expect(e.toString.includes("404")).toBe(true);
+    })
+})
+
+// promise resolves 写法
+test("异步方法的测试3", () => {
+    return  expect(一个异步方法()).resolves.toMatchObject({ // 匹配 object
+        data: {
+            success: true
+        }
+    });
+})
+
+// promise rejects toThrow 写法
+test("异步方法的测试4", () => {
+    return  expect(一个异步方法()).rejects.toThrow();
+})
+
+// async await 成功写法
+test("异步方法的测试5", async () => {
+    await expect(一个异步方法()).resolves.toMatchObject({ // 匹配 object
+        data: {
+            success: true
+        }
+    });
+})
+
+// async await 失败写法
+test("异步方法的测试6", async () => {
+    await  expect(一个异步方法()).rejects.toThrow();
+})
+
+// async await 成功写法2
+test("异步方法的测试7", async () => {
+    const response = await 一个异步方法();
+    expect(response.data).toEqual({
+        success: true
+    });
+})
+
+// async await 失败写法2
+test("异步方法的测试8", async () => {
+    expect.assertions(1); // 下面的 expect 至少要执行一个且为真
+    try {
+        const response = await 一个异步方法();
+    } catch(e) {
+        expect(e.toString().includes("404")).toBe(true);
+    }
+})
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
