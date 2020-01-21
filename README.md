@@ -259,16 +259,121 @@ test("异步方法的测试8", async () => {
 })
 ```
 
+### Jest 中的钩子函数
 
+- beforeAll afterAll beforeEach afterEach
 
+假设现在要测试含有 Demo 类的文件 demo.js
 
+```js
+export default class demo {
+    constructor() {
+        this.count = 0;
+    }
 
+    add () {
+        this.count += 1;
+    }
 
+    minus () {
+        this.count -= 1;
+    }
+}
+```
 
+```js
+import Demo from "./demo";
 
+// beforeAll 相当于在最前面 const demo = new Demo();
 
+let demo = null;
 
+// 在测试用例之前
+// beforeAll(() => {
+//     demo = new Demo();
+// });
 
+// 在测试用例之之后
+// afterAll(() => {
+//     do sth
+// });
+
+// 在测试用例之前分别执行
+beforeEach(() => {
+    demo = new Demo();
+});
+
+// 在测试用例之后分别执行
+// afterEach(() => {
+//     do sth
+// });
+
+test("加法的测试", () => {
+    demo.add();
+    expect(demo.count).toBe(1); // passed
+});
+
+test("减法的测试", () => {
+    demo.minus();
+    expect(demo.count).toBe(0); // failed ※
+});
+```
+
+※ *用 beforeAll 测试用例等于用同一个 `demo` 实例 所以为 0，但是 beforeEach 是在每一个之前独立运行 所以应为 -1*
+
+- describe (分组)
+
+```js
+describe("测试关于加法的代码", () => {
+    test("加法的测试", () => {
+        demo.add();
+        expect(demo.count).toBe(1); // passed
+    });
+    test("加法的测试2", () => {
+        ...
+    });
+});
+
+describe("测试关于减法的代码", () => {
+    test("减法的测试", () => {
+        demo.minus();
+        expect(demo.count).toBe(-1);
+    });
+    test("减法的测试2", () => {
+        ...
+    });
+});
+```
+
+- 钩子函数的作用域
+
+```js
+beforeEach(() => {
+    // 先执行 
+});
+
+describe("测试关于减法的代码", () => {
+    beforeEach(() => {
+        // 再执行
+    });
+
+    test("减法的测试", () => {
+        demo.minus();
+        expect(demo.count).toBe(-1);
+    });
+});
+```
+
+- test.only(... 和 describe.only(... 等等的 .only 方法
+
+会只执行 `.only` 的测试用例，skip 其他的测试用例，当想要单个测试的时候就不用再配置文件中一个一个去改
+
+```js
+test.only("减法的测试", () => {
+    demo.minus();
+    expect(demo.count).toBe(-1);
+});
+```
 
 
 
