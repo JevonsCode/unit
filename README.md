@@ -403,7 +403,7 @@ test("runCallback test", () => {
 
 假定有个从 API 获取用户的类。 该类用 axios 调用 API 然后返回 data，其中包含所有用户的属性：
 
-```
+```js
 // users.js
 import axios from 'axios';
 
@@ -420,7 +420,7 @@ export default Users;
 
 一旦模拟模块，我们可为 .get 提供一个 mockResolvedValue ，它会返回假数据用于测试。 实际上，我们想让 axios.get('/users.json') 有个假的 response。
 
-```
+```js
 // users.test.js
 import axios from 'axios';
 import Users from './users';
