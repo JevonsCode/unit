@@ -439,8 +439,43 @@ test('should fetch users', () => {
 });
 ```
 
+## Jest 进阶用法
 
+### snapshots（快照）功能
 
+- 测试类似配置文件的时候
+
+```js
+export const generateConfig = () => {
+    return {
+        server: "http://0.0.0.0",
+        port: 8080,
+        domain: "local"
+    }
+}
+```
+
+```js
+import { generateConfig } from "./demo";
+
+test("测试", () => {
+    expect(generateConfig()).toMatchSnapshot();
+});
+```
+
+在 `--watchAll` 情况下，如果需要修改配置，保存后按 w
+
+```js
+Watch Usage
+ › Press f to run only failed tests.
+ › Press o to only run tests related to changed files.
+ › Press p to filter by a filename regex pattern.
+ › Press t to filter by a test name regex pattern.
+ › Press u to update failing snapshots. // 按 u 一次性全部更新快照的文件
+ › Press i to update failing snapshots interactively. // 按 i 交互式的更新快照文件（在有多个快照更新的时候）
+ › Press q to quit watch mode.
+ › Press Enter to trigger a test run.
+```
 
 
 
