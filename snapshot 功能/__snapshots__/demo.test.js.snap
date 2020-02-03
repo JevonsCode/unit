@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`测试 1`] = `
+Object {
+  "domain": "local",
+  "port": 8081,
+  "server": "http://0.0.0.0",
+  "time": Any<Date>,
+}
+`;
+
+exports[`测试 2`] = `
+Object {
+  "domain": "local",
+  "port": 8082,
+  "server": "http://0.0.0.0",
+  "time": Any<Date>,
+}
+`;
