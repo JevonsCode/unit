@@ -1,4 +1,5 @@
 # UNIT
+
 note of unit
 
 ---
@@ -12,6 +13,7 @@ note of unit
 ## 自己编写一个类似 Jest 中方法的实现
 
 main.js
+
 ```js
 function add (a, b) {
     return a + b;
@@ -23,6 +25,7 @@ function minus (a, b) {
 ```
 
 main.test.js
+
 ```js
 function expect (result) {
     return {
@@ -82,6 +85,7 @@ test('测试减法 7 - 3', () => {
     ]
 }
 ```
+
 [使用 TypeScript](https://jestjs.io/docs/en/getting-started.html#using-typescript)， 安装 `@babel/preset-typescript`，配置：
 
 ```
@@ -104,67 +108,75 @@ jest 内部有一个插件 babel-jest 会检测当前环境下你是否安装了
 ### Jest 的[匹配器](https://jestjs.io/docs/en/expect#methods)
 
 - toBe 匹配器  
-    相当于全等（===）
-    ```js
-    ...
-        const a = { b: 1 }
-        expect(a).toBe({ b: 1 }) // failed （引用地址不同）
-    ...
-    ```
+  相当于全等（===）
+
+  ```js
+  ...
+      const a = { b: 1 }
+      expect(a).toBe({ b: 1 }) // failed （引用地址不同）
+  ...
+  ```
 
 - toEqual 匹配器  
-    ```js
-    ...
-        const a = { b: 1 }
-        expect(a).toEqual({ b: 1 }) // passed
-    ...
-    ```
+
+  ```js
+  ...
+      const a = { b: 1 }
+      expect(a).toEqual({ b: 1 }) // passed
+  ...
+  ```
 
 - toBeNull、toBeUndefined、toBeDefined、toBeTruthy、toBeFalsy 匹配器  
-    匹配 null undefined defined true(1) false(0)
+  匹配 null undefined defined true(1) false(0)
 
 - not 匹配器  
-    ```js
-    ...
-        expect(1).not.toEqual(2) // passed
-    ...
-    ```
+
+  ```js
+  ...
+      expect(1).not.toEqual(2) // passed
+  ...
+  ```
 
 - toBeGreaterThan、toBeLessThan、toBeGreaterThanOrEqual、toBeLessThanOrEqual 匹配器  
-    ```js
-    const count = 5;
-    expect(count).toBeGreaterThan(6); // failed （5 是否大于 6）
-    expect(count).toBeLessThanOrEqual(6); // passed （5 是否小于等于 6）
-    ```
+
+  ```js
+  const count = 5;
+  expect(count).toBeGreaterThan(6); // failed （5 是否大于 6）
+  expect(count).toBeLessThanOrEqual(6); // passed （5 是否小于等于 6）
+  ```
 
 - toBeCloseTo 匹配器  
-    ```js
-    const a = 0.1;
-    const b = 0.1;
-    expect(a + b).toBeEqual(0.3); // failed
-    expect(a + b).toBeCloseTo(0.3); // passed
-    ```
+
+  ```js
+  const a = 0.1;
+  const b = 0.1;
+  expect(a + b).toBeEqual(0.3); // failed
+  expect(a + b).toBeCloseTo(0.3); // passed
+  ```
 
 - toMatch 匹配器  
-    ```js
-    const str = "qwertyuiop";
-    expect(str).toMatch(/qwer/); // passed
-    ```
+
+  ```js
+  const str = "qwertyuiop";
+  expect(str).toMatch(/qwer/); // passed
+  ```
 
 - toContain 匹配器  
-    ```js
-    const arr = ["q", "w", "e"];
-    const data = new Set(arr);
-    expect(data).toContain("w"); // passed
-    ```
+
+  ```js
+  const arr = ["q", "w", "e"];
+  const data = new Set(arr);
+  expect(data).toContain("w"); // passed
+  ```
 
 - toThrow 匹配器  
-    ```js
-    const errorThrow = () => { throw new Error("error"); }
-    ...
-    expect(errorThrow).toThrow(); // passed
-    expect(errorThrow).toThrow("error"); // passed
-    ```
+
+  ```js
+  const errorThrow = () => { throw new Error("error"); }
+  ...
+  expect(errorThrow).toThrow(); // passed
+  expect(errorThrow).toThrow("error"); // passed
+  ```
 
 ### --watchAll 的命令描述
 
@@ -382,6 +394,7 @@ export const runCallback = (callback) => {
     callback();
 }
 ```
+
 - Mock 的返回值
 
 ```js
@@ -397,6 +410,7 @@ test("runCallback test", () => {
     expect(func.mock.calls.length).toBe(2); // 调用次数测试 func.mock ※
 });
 ```
+
 ※ *[.mock 属性](https://jestjs.io/docs/zh-Hans/mock-functions#mock-%E5%B1%9E%E6%80%A7) 其中 invocationCallOrder 执行顺序*
 
 - [模拟模块](https://jestjs.io/docs/zh-Hans/mock-functions#%E6%A8%A1%E6%8B%9F%E6%A8%A1%E5%9D%97)
@@ -477,8 +491,46 @@ Watch Usage
  › Press Enter to trigger a test run.
 ```
 
+- 如果文件中有动态属性，如：`time: new Date()`
 
+这时生成的快照(demo.test.js.snap)中，对应的值就变成 `"time": xxxx-xx-xxTxx:xx:xx.xxxY` 的格式
 
+测试用例就可以写成：
+
+```js
+test("测试", () => {
+    expect(generateConfig()).toMatchSnapshot({
+        time: expect.any(Date)
+    });
+});
+```
+
+- 行内快照（toMatchInlineSnapshot）
+
+让快照不生成文件而是直接出现在行内
+
+```js
+import { generateConfig, generateConfig2 } from "./demo";
+
+test("测试", () => {
+    expect(generateConfig()).toMatchInlineSnapshot(
+        {
+            time: expect.any(Date)
+        },
+        // 以下是运行后自动生成的
+        `
+    Object {
+      "domain": "local",
+      "port": 8083,
+      "server": "http://0.0.0.0",
+      "time": Any<Date>,
+    }
+  `
+    );
+});
+```
+
+### [MOCK](https://jestjs.io/docs/zh-Hans/mock-function-api)
 
 
 
