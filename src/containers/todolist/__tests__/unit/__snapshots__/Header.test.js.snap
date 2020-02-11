@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header 组件 渲染样式快照 1`] = `
+<div
+  className="header"
+>
+  <div
+    className="header-box"
+  >
+    TODOLIST
+    <input
+      className="header-input"
+      data-test="input"
+      onChange={[Function]}
+      onKeyUp={[Function]}
+      placeholder="Todo"
+      value=""
+    />
+  </div>
+</div>
+`;
